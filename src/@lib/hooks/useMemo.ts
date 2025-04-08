@@ -11,7 +11,7 @@ export function useMemo<T>(
   const prevSavedRef = useRef<{ deps: DependencyList; value: T } | null>(null);
 
   // 2. 현재 의존성과 이전 의존성 비교
-  if (!_equals(prevSavedRef?.current?.deps, _deps)) {
+  if (!prevSavedRef.current || !_equals(prevSavedRef?.current?.deps, _deps)) {
     // 3. 의존성이 변경된 경우 factory 함수 실행 및 결과 저장
     prevSavedRef.current = {
       deps: _deps,
