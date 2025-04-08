@@ -1,15 +1,13 @@
+import { isObjectPair } from "../../utils";
+
 export function deepEquals<T>(objA: T, objB: T): boolean {
   if (objA === objB) {
     return true;
   }
 
   // 1. 기본 타입이거나 null인 경우 처리
-  if (
-    typeof objA !== "object" ||
-    objA === null ||
-    typeof objB !== "object" ||
-    objB === null
-  ) {
+
+  if (!isObjectPair(objA, objB)) {
     return false;
   }
 
@@ -22,8 +20,8 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
     return objA.every((item, index) => deepEquals(item, objB[index]));
   }
 
-  const keyA = Object.keys(objA);
-  const keyB = Object.keys(objB);
+  const keyA = Object.keys(objA as object);
+  const keyB = Object.keys(objB as object);
 
   //  객체의 키 개수가 다른 경우 처리
   if (keyA.length !== keyB.length) {
