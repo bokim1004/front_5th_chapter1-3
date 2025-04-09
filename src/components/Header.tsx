@@ -1,3 +1,4 @@
+import { memo } from "../@lib";
 import { useAuthContext } from "../context/AuthContext/useAuthContext";
 import { useThemeContext } from "../context/ThemeContext/useThemeContext";
 import { renderLog } from "../utils";
@@ -47,4 +48,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

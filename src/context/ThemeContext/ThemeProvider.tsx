@@ -1,22 +1,27 @@
-import { createContext, useState } from "react";
-import { ThemeContextType } from "../../types/type";
+import { useState } from "react";
+import { useCallback, useMemo } from "../../@lib";
+import { ThemeContext } from "./useThemeContext";
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState("light");
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme, toggleTheme],
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
 };
-
-export { ThemeContext, ThemeProvider };

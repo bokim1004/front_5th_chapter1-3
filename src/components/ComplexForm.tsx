@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { useAuthContext } from "../context/AuthContext/useAuthContext";
+import React, { useState } from "react";
+import { memo } from "../@lib";
+import { useNotificationContext } from "../context/NotificationContext/useNotificationContext";
 import { renderLog } from "../utils";
 
 const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAuthContext();
+  const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -86,4 +87,4 @@ const ComplexForm: React.FC = () => {
   );
 };
 
-export default ComplexForm;
+export default memo(ComplexForm);

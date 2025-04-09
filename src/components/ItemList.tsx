@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { memo } from "../@lib";
 import { useThemeContext } from "../context/ThemeContext/useThemeContext";
 import { Item } from "../types/type";
 import { renderLog } from "../utils";
@@ -61,4 +62,4 @@ const ItemList: React.FC<{
     </div>
   );
 };
-export default ItemList;
+export default memo(ItemList);

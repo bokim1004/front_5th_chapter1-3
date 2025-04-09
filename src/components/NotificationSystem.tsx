@@ -1,9 +1,11 @@
-import { useAuthContext } from "../context/AuthContext/useAuthContext";
+import React from "react";
+import { memo } from "../@lib";
+import { useNotificationContext } from "../context/NotificationContext/useNotificationContext";
 import { renderLog } from "../utils";
 
 const NotificationSystem: React.FC = () => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAuthContext();
+  const { notifications, removeNotification } = useNotificationContext();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -35,4 +37,4 @@ const NotificationSystem: React.FC = () => {
   );
 };
 
-export default NotificationSystem;
+export default memo(NotificationSystem);

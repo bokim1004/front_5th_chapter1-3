@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   ComplexForm,
   Header,
@@ -9,7 +9,7 @@ import { useThemeContext } from "../context/ThemeContext/useThemeContext";
 import { generateItems } from "../utils";
 
 const Main: React.FC = () => {
-  const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(() => generateItems(1000));
   const { theme } = useThemeContext();
 
   const addItems = () => {

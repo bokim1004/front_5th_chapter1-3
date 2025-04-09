@@ -8,7 +8,10 @@ export function useMemo<T>(
   _equals = shallowEquals,
 ): T {
   // 1. 이전 의존성과 결과를 저장할 ref 생성
-  const prevSavedRef = useRef<{ deps: DependencyList; value: T } | null>(null);
+  const prevSavedRef = useRef<{
+    deps: DependencyList;
+    value: T;
+  } | null>(null);
 
   // 2. 현재 의존성과 이전 의존성 비교
   if (!prevSavedRef.current || !_equals(prevSavedRef?.current?.deps, _deps)) {

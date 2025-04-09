@@ -29,9 +29,20 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
+}
+
+//NotificationContext 타입
+interface NotificationContextType {
   notifications: Notification[];
   addNotification: (message: string, type: Notification["type"]) => void;
   removeNotification: (id: number) => void;
 }
 
-export type { AuthContextType, Item, Notification, ThemeContextType, User };
+export type {
+  AuthContextType,
+  Item,
+  Notification,
+  NotificationContextType,
+  ThemeContextType,
+  User,
+};
