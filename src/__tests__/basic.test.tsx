@@ -43,15 +43,9 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       });
 
       it("객체를 얕게 비교해야 한다", () => {
-        expect(shallowEquals({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(
-          true,
-        );
-        expect(shallowEquals({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(
-          true,
-        );
-        expect(shallowEquals({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(
-          false,
-        );
+        expect(shallowEquals({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
+        expect(shallowEquals({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
+        expect(shallowEquals({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(false);
         const obj1 = { a: {} };
         const obj2 = { a: {} };
         expect(shallowEquals(obj1, obj2)).toBe(false); // 다른 객체 참조
@@ -87,15 +81,9 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       it("객체를 정확히 비교해야 한다", () => {
         expect(deepEquals({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
         expect(deepEquals({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
-        expect(deepEquals({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(
-          false,
-        );
-        expect(deepEquals({ a: { b: 2 } }, { a: { b: 2 } })).toBe(
-          true,
-        );
-        expect(deepEquals({ a: { b: 2 } }, { a: { b: 3 } })).toBe(
-          false,
-        );
+        expect(deepEquals({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(false);
+        expect(deepEquals({ a: { b: 2 } }, { a: { b: 2 } })).toBe(true);
+        expect(deepEquals({ a: { b: 2 } }, { a: { b: 3 } })).toBe(false);
       });
 
       it("중첩된 구조를 정확히 비교해야 한다", () => {
@@ -162,12 +150,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
           return (
             <>
-              <div data-testid="render-count">
-                Render Count: {renderCount}
-              </div>
-              <div data-testid="ref-value">
-                Ref Value: {ref.current}
-              </div>
+              <div data-testid="render-count">Render Count: {renderCount}</div>
+              <div data-testid="ref-value">Ref Value: {ref.current}</div>
               <button
                 onClick={() => {
                   ref.current += 1;
@@ -191,34 +175,22 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         const { getByText, getByTestId } = render(<TestComponent />);
 
         // 초기 상태 확인
-        expect(getByTestId("render-count").textContent).toBe(
-          "Render Count: 1",
-        );
-        expect(getByTestId("ref-value").textContent).toBe(
-          "Ref Value: 0",
-        );
+        expect(getByTestId("render-count").textContent).toBe("Render Count: 1");
+        expect(getByTestId("ref-value").textContent).toBe("Ref Value: 0");
 
         // ref 값 변경
         fireEvent.click(getByText("Increment Ref"));
 
         // ref 값이 변경되었지만 리렌더링은 발생하지 않음
-        expect(getByTestId("render-count").textContent).toBe(
-          "Render Count: 1",
-        );
-        expect(getByTestId("ref-value").textContent).toBe(
-          "Ref Value: 0",
-        );
+        expect(getByTestId("render-count").textContent).toBe("Render Count: 1");
+        expect(getByTestId("ref-value").textContent).toBe("Ref Value: 0");
 
         // 강제 리렌더링
         fireEvent.click(getByText("Force Update"));
 
         // 리렌더링 발생, 변경된 ref 값 반영
-        expect(getByTestId("render-count").textContent).toBe(
-          "Render Count: 2",
-        );
-        expect(getByTestId("ref-value").textContent).toBe(
-          "Ref Value: 1",
-        );
+        expect(getByTestId("render-count").textContent).toBe("Render Count: 2");
+        expect(getByTestId("ref-value").textContent).toBe("Ref Value: 1");
       });
     });
 
@@ -242,9 +214,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
         return (
           <div>
-            <button
-              onClick={() => setRenderCount((prev) => prev + 1)}
-            >
+            <button onClick={() => setRenderCount((prev) => prev + 1)}>
               Force Render
             </button>
           </div>
@@ -346,10 +316,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         const [deps, setDeps] = useState(initialDeps);
         const [, setRenderCount] = useState(0);
 
-        const memoizedCallback = useCallback(
-          () => mockCallback(42),
-          deps,
-        );
+        const memoizedCallback = useCallback(() => mockCallback(42), deps);
 
         useImperativeHandle(ref, () => ({
           updateDeps: (newDeps: unknown[]) => setDeps(newDeps),
@@ -358,9 +325,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
         return (
           <div>
-            <button
-              onClick={() => setRenderCount((prev) => prev + 1)}
-            >
+            <button onClick={() => setRenderCount((prev) => prev + 1)}>
               Force Render
             </button>
           </div>
@@ -385,17 +350,13 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         act(() => {
           ref.current?.updateDeps([42]);
         });
-        expect(ref.current?.getMemoizedCallback()).toBe(
-          initialCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).toBe(initialCallback);
 
         // 의존성을 [43]으로 변경 -> 재생성
         act(() => {
           ref.current?.updateDeps([43]);
         });
-        expect(ref.current?.getMemoizedCallback()).not.toBe(
-          initialCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).not.toBe(initialCallback);
 
         // 의존성을 [42, 43]으로 변경 -> 재생성
         act(() => {
@@ -422,24 +383,18 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         act(() => {
           ref.current?.updateDeps([emptyObject]);
         });
-        expect(ref.current?.getMemoizedCallback()).toBe(
-          objectCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).toBe(objectCallback);
 
         Object.assign(emptyObject, { a: 10 });
         act(() => {
           ref.current?.updateDeps([emptyObject]);
         });
-        expect(ref.current?.getMemoizedCallback()).toBe(
-          objectCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).toBe(objectCallback);
 
         act(() => {
           ref.current?.updateDeps([{ a: 10 }]);
         });
-        expect(ref.current?.getMemoizedCallback()).not.toBe(
-          objectCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).not.toBe(objectCallback);
 
         const emptyArray: number[] = [];
         act(() => {
@@ -452,16 +407,12 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         act(() => {
           ref.current?.updateDeps([emptyArray]);
         });
-        expect(ref.current?.getMemoizedCallback()).toBe(
-          arrayCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).toBe(arrayCallback);
 
         act(() => {
           ref.current?.updateDeps([[]]);
         });
-        expect(ref.current?.getMemoizedCallback()).not.toBe(
-          arrayCallback,
-        );
+        expect(ref.current?.getMemoizedCallback()).not.toBe(arrayCallback);
       });
 
       it("메모이제이션된 콜백 함수가 올바르게 동작하는지 확인", () => {
@@ -504,9 +455,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
         return (
           <div>
-            <button
-              onClick={() => setRenderCount((prev) => prev + 1)}
-            >
+            <button onClick={() => setRenderCount((prev) => prev + 1)}>
               Force Render
             </button>
           </div>
@@ -524,13 +473,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
         // 배열의 첫 번째 인자에 대해서만 값이 같은지 검사하는 equals 주입
         const equals = (a: unknown[], b: unknown[]) => a[0] === b[0];
-        render(
-          <TestComponent
-            ref={ref}
-            initialDeps={[42]}
-            equals={equals}
-          />,
-        );
+        render(<TestComponent ref={ref} initialDeps={[42]} equals={equals} />);
         expect(mockFactory).toHaveBeenCalledTimes(1);
 
         // 첫 번째 의존성을 다시 [42] 로 변경 -> 재계산 되지 않아야 함
@@ -579,9 +522,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
         return (
           <div>
-            <button
-              onClick={() => setRenderCount((prev) => prev + 1)}
-            >
+            <button onClick={() => setRenderCount((prev) => prev + 1)}>
               Force Render
             </button>
           </div>
@@ -670,25 +611,17 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         rerender(<MemoizedComponent value={2} />);
         expect(TestComponent).toHaveBeenCalledTimes(2);
 
-        rerender(
-          <MemoizedComponent value={2} style={{ color: "#09F" }} />,
-        );
+        rerender(<MemoizedComponent value={2} style={{ color: "#09F" }} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
 
-        rerender(
-          <MemoizedComponent value={2} style={{ color: "#09F" }} />,
-        );
+        rerender(<MemoizedComponent value={2} style={{ color: "#09F" }} />);
         expect(TestComponent).toHaveBeenCalledTimes(4);
 
         const DEFAULT_STYLE = { color: "#09F" };
-        rerender(
-          <MemoizedComponent value={2} style={DEFAULT_STYLE} />,
-        );
+        rerender(<MemoizedComponent value={2} style={DEFAULT_STYLE} />);
         expect(TestComponent).toHaveBeenCalledTimes(5);
 
-        rerender(
-          <MemoizedComponent value={2} style={DEFAULT_STYLE} />,
-        );
+        rerender(<MemoizedComponent value={2} style={DEFAULT_STYLE} />);
         expect(TestComponent).toHaveBeenCalledTimes(5);
       });
     });
@@ -696,9 +629,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
     describe("deepMemo HOC", () => {
       it("props로 전달하는 값이 모두 변경되어야 리렌더링 된다.", () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
-        const { rerender } = render(
-          <DeepMemoizedComponent value={1} />,
-        );
+        const { rerender } = render(<DeepMemoizedComponent value={1} />);
 
         expect(TestComponent).toHaveBeenCalledTimes(1);
 
@@ -712,25 +643,13 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(TestComponent).toHaveBeenCalledTimes(2);
 
         const DEFAULT_STYLE = { color: "#09F" };
-        rerender(
-          <DeepMemoizedComponent value={2} style={DEFAULT_STYLE} />,
-        );
+        rerender(<DeepMemoizedComponent value={2} style={DEFAULT_STYLE} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
 
-        rerender(
-          <DeepMemoizedComponent
-            value={2}
-            style={{ color: "#09F" }}
-          />,
-        );
+        rerender(<DeepMemoizedComponent value={2} style={{ color: "#09F" }} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
 
-        rerender(
-          <DeepMemoizedComponent
-            style={{ color: "#09F" }}
-            value={2}
-          />,
-        );
+        rerender(<DeepMemoizedComponent style={{ color: "#09F" }} value={2} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
       });
 
