@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { memo } from "../@lib";
+import { memo, useMemo } from "../@lib";
 import { useThemeContext } from "../context/ThemeContext/useThemeContext";
 import { Item } from "../types/type";
 import { renderLog } from "../utils";
@@ -13,15 +13,21 @@ const ItemList: React.FC<{
   const [filter, setFilter] = useState("");
   const { theme } = useThemeContext();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
-  );
+  const filteredItems = useMemo(() => {
+    return items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(filter.toLowerCase()) ||
+        item.category.toLowerCase().includes(filter.toLowerCase()),
+    );
+  }, [items, filter]);
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = useMemo(() => {
+    return filteredItems.reduce((sum, item) => sum + item.price, 0);
+  }, [filteredItems]);
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const averagePrice = useMemo(() => {
+    return Math.round(totalPrice / filteredItems.length) || 0;
+  }, [totalPrice, filteredItems.length]);
 
   return (
     <div className="mt-8">
