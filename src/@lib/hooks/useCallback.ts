@@ -7,5 +7,6 @@ export function useCallback<T extends Function>(
   _deps: DependencyList,
 ) {
   //`() =>factory`해서 함수 자체를 리턴
-  return useMemo(() => factory, _deps);
+  const memo = useMemo(() => factory, _deps);
+  return memo as T;
 }

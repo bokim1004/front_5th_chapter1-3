@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import { ComponentType, createElement } from "react";
 import { shallowEquals } from "../equalities";
 // memo HOC는 컴포넌트의 props를 얕은 비교하여 불필요한 리렌더링을 방지합니다.
 export function memo<P extends object>(
@@ -17,7 +17,7 @@ export function memo<P extends object>(
     }
 
     //props가 변경된 경우에만 새로운 렌더링 수행
-    const newResult = <Component {...props} />;
+    const newResult = createElement(Component, props);
     prevProps = props;
     prevRender = newResult;
     return newResult;
