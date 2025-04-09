@@ -156,16 +156,14 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
                 onClick={() => {
                   ref.current += 1;
                   // ref 값만 변경하고 리렌더링하지 않음
-                }}
-              >
+                }}>
                 Increment Ref
               </button>
               <button
                 onClick={() => {
                   setForceUpdate({});
                   // 강제로 리렌더링
-                }}
-              >
+                }}>
                 Force Update
               </button>
             </>
