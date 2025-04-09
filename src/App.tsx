@@ -1,37 +1,6 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { AppContextType, Item, Notification, User } from "./types/type";
 import { generateItems, renderLog } from "./utils";
-
-// 타입 정의
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface Notification {
-  id: number;
-  message: string;
-  type: "info" | "success" | "warning" | "error";
-}
-
-// AppContext 타입 정의
-interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
-}
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -243,15 +212,17 @@ export const NotificationSystem: React.FC = () => {
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className={`p-4 rounded shadow-lg ${
-            notification.type === "success"
-              ? "bg-green-500"
-              : notification.type === "error"
-                ? "bg-red-500"
-                : notification.type === "warning"
-                  ? "bg-yellow-500"
-                  : "bg-blue-500"
-          } text-white`}
+          className={`p-4 rounded shadow-lg
+             ${
+               notification.type === "success"
+                 ? "bg-green-500"
+                 : notification.type === "error"
+                   ? "bg-red-500"
+                   : notification.type === "warning"
+                     ? "bg-yellow-500"
+                     : "bg-blue-500"
+             } 
+            text-white`}
         >
           {notification.message}
           <button
@@ -278,10 +249,7 @@ const App: React.FC = () => {
   };
 
   const addItems = () => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
+    setItems((prevItems) => [...prevItems, ...generateItems(1000, prevItems.length)]);
   };
 
   const login = (email: string) => {
@@ -304,9 +272,7 @@ const App: React.FC = () => {
   };
 
   const removeNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
+    setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
 
   const contextValue: AppContextType = {
