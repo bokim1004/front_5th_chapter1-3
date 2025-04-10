@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCallback } from "../@lib";
 import {
   ComplexForm,
   Header,
@@ -12,12 +13,12 @@ const Main: React.FC = () => {
   const [items, setItems] = useState(() => generateItems(1000));
   const { theme } = useThemeContext();
 
-  const addItems = () => {
+  const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
+  }, []);
 
   return (
     <div
